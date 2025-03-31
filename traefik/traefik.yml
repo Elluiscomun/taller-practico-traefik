@@ -1,0 +1,30 @@
+api:
+  dashboard: true
+  insecure: true  # Habilitado solo para pruebas
+
+entryPoints:
+  web:
+    address: ":80"
+  websecure:
+    address: ":443"
+
+providers:
+  docker:
+    endpoint: "unix:///var/run/docker.sock"
+    exposedByDefault: false
+
+certificatesResolvers:
+  letsencrypt:
+    acme:
+      email: "luis@luis.com"
+      storage: /letsencrypt/secure.json
+      httpChallenge:
+        entryPoint: web
+
+http:
+  middlewares:
+    rate-limit:
+      rateLimit:
+        average: 5
+        burst: 10
+
